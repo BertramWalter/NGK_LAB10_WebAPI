@@ -21,6 +21,14 @@ namespace NGK_LAB10_WebAPI.Controllers
             _context = context;
         }
 
+        //Via web.api’et kan andre klienter hente de seneste uploadede vejrdata
+        [HttpGet]
+        public void GetLatestWeatherData()
+        {
+            
+        }
+
+
         // GET: api/WeatherStation
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherStation>>> GetWeatherStation()
