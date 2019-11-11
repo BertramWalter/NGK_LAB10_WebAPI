@@ -21,6 +21,11 @@ namespace NGK_LAB10_WebAPI.Controllers
             _context = context;
         }
 
+        public IActionResult Test(int x = 2, int y = 4)
+        {
+            return Content(string.Format($"x={x}, og y={y}"));
+        }
+
         // GET: api/WeatherObservation
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()

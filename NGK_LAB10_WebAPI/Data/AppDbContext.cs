@@ -11,7 +11,6 @@ namespace NGK_LAB10_WebAPI.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
-        public DbSet<NGK_LAB10_WebAPI.Models.WeatherStation> WeatherStation { get; set; }
         public DbSet<NGK_LAB10_WebAPI.Models.WeatherObservation> WeatherObservation { get; set; }
 
         //DbSets here:
