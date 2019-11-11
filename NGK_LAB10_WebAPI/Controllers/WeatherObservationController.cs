@@ -46,6 +46,28 @@ namespace NGK_LAB10_WebAPI.Controllers
 
         }
 
+        //[HttpGet("{startTime,endTime}")]
+        //public async Task<ActionResult<List<WeatherObservation>>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
+        //{
+
+
+        //    //foreach (var observation in )
+        //    //{
+                
+        //    //}
+
+
+
+        //    //var weatherStation = await _context.WeatherStation.FindAsync(id);
+
+        //    //if (weatherStation == null)
+        //    //{
+        //    //    return NotFound();
+        //    //}
+
+        //    //return weatherStation;
+        //}
+
 
         // GET: api/WeatherObservation/5
         [HttpGet("{id}")]
