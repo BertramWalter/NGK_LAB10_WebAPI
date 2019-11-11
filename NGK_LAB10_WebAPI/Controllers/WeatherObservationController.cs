@@ -84,11 +84,6 @@ namespace NGK_LAB10_WebAPI.Controllers
         }
 
 
-        [HttpGet("{startTime,endTime}")]
-        public async Task<ActionResult<WeatherStation>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
-        {
-            
-        }
 
         // PUT: api/WeatherObservation/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
