@@ -22,7 +22,29 @@ namespace NGK_LAB10_WebAPI.Controllers
             _context = context;
         }
 
-        //Get weather data by Date
+        //Via web.api’et kan andre klienter hente de seneste uploadede vejrdata
+        [HttpGet]
+        public IEnumerable<WeatherObservation> GetLatestWeatherData()
+        {
+            return Enumerable.Range(1, 4).Select(index => new WeatherObservation
+            {
+                Date = _context.WeatherObservation.Last().Date,
+                TemperatureC = _context.WeatherObservation.Last().TemperatureC,
+                Location = _context.WeatherObservation.Last().Location,
+                Humidity = _context.WeatherObservation.Last().Humidity,
+                AirPressure = _context.WeatherObservation.Last().AirPressure
+
+            });
+        }
+        
+        // GET: api/WeatherObservation
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
+        {
+            return await _context.WeatherObservation.ToListAsync();
+        }
+
+        //Get data by temperature
         [HttpGet("{Date}")]
         public async Task<ActionResult<List<WeatherObservation>>> GetWeatherByDate(DateTime Date)
         {
