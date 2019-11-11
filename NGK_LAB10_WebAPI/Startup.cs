@@ -57,8 +57,10 @@ namespace NGK_LAB10_WebAPI
             {
                 routes.MapRoute(
                     name: "WeatherObservation-Interval",
-                    template: "{controller=WeatherObservation}/{action}/")
-            })
+                    template:
+                    "{controller=WeatherObservation}/{action=GetWeatherObservationBetweenIntervals}/{StartTime}/{EndTime}"
+                    );
+            });
         }
     }
 }
