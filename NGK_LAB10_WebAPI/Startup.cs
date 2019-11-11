@@ -53,13 +53,23 @@ namespace NGK_LAB10_WebAPI
                 endpoints.MapControllers();
             });
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "WeatherObservation-Interval",
-                    template:
+                    pattern:
                     "{controller=WeatherObservation}/{action=GetWeatherObservationBetweenIntervals}/{StartTime}/{EndTime}"
                     );
+                endpoints.MapControllerRoute(
+                    name: "WeatherObservation-ByDate",
+                    pattern:
+                    "{controller=WeatherObservation}/{action=GetWeatherByDate}/{Date}"
+                );
+                endpoints.MapControllerRoute(
+                    name: "WeatherObservation-Latest",
+                    pattern:
+                    "{controller=WeatherObservation}/{action=GetLatestWeatherData}"
+                );
             });
         }
     }

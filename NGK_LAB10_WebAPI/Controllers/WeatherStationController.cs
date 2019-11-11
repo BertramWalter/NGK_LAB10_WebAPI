@@ -61,7 +61,7 @@ namespace NGK_LAB10_WebAPI.Controllers
             return weatherStation;
         }
 
-
+        
         [HttpGet("{startTime,endTime}")]
         public async Task<ActionResult<WeatherStation>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
         {
