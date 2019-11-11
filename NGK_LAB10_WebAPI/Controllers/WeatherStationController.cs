@@ -21,6 +21,14 @@ namespace NGK_LAB10_WebAPI.Controllers
             _context = context;
         }
 
+        //Via web.api’et kan andre klienter hente de seneste uploadede vejrdata
+        [HttpGet]
+        public void GetLatestWeatherData()
+        {
+            
+        }
+
+
         // GET: api/WeatherStation
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherStation>>> GetWeatherStation()
@@ -32,6 +40,20 @@ namespace NGK_LAB10_WebAPI.Controllers
         // GET: api/WeatherStation/5
         [HttpGet("{id}")]
         public async Task<ActionResult<WeatherStation>> GetWeatherStation(int id)
+        {
+            var weatherStation = await _context.WeatherStation.FindAsync(id);
+
+            if (weatherStation == null)
+            {
+                return NotFound();
+            }
+
+            return weatherStation;
+        }
+
+
+        [HttpGet("{startTime,endTime}")]
+        public async Task<ActionResult<WeatherStation>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
         {
             var weatherStation = await _context.WeatherStation.FindAsync(id);
 
