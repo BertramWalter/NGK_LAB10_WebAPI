@@ -28,6 +28,15 @@ namespace NGK_LAB10_WebAPI.Controllers
             return await _context.WeatherStation.ToListAsync();
         }
 
+        //Get data by temperature
+        [HttpGet("{Date}")]
+        public List<WeatherStation> GetWeatherByDate(DateTime Date)
+        {
+            
+
+        }
+
+
         // GET: api/WeatherStation/5
         [HttpGet("{id}")]
         public async Task<ActionResult<WeatherStation>> GetWeatherStation(int id)
