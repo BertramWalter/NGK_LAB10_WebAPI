@@ -8,10 +8,8 @@ namespace NGK_LAB10_WebAPI.Data
 {
     public class AppDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=Localhost;Initial Catalog=NGK3;Integrated Security=True");
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options) { }
 
         //DbSets here:
         //public DbSet<Model/tablename> Table { get; set; }
