@@ -23,17 +23,23 @@ namespace NGK_LAB10_WebAPI.Controllers
 
         //Via web.api’et kan andre klienter hente de seneste uploadede vejrdata
         [HttpGet]
-        public IEnumerable<WeatherObservation> GetLatestWeatherData()
+        public async Task<ActionResult<List<WeatherObservation>>> GetLatestWeatherData()
         {
-            return Enumerable.Range(1, 4).Select(index => new WeatherObservation
-            {
-                Date = _context.WeatherObservation.Last().Date,
-                TemperatureC = _context.WeatherObservation.Last().TemperatureC,
-                Location = _context.WeatherObservation.Last().Location,
-                Humidity = _context.WeatherObservation.Last().Humidity,
-                AirPressure = _context.WeatherObservation.Last().AirPressure
+            List<WeatherObservation> listWo = new List<WeatherObservation>();
 
-            });
+            for (int i = 0; i < 4; i++)
+            {
+                WeatherObservation wo = new WeatherObservation
+                {
+                    Date =  _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync()-i).Date,
+                    TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
+                    Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
+                    Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
+                    AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
+                };
+                listWo.Add(wo);
+            }
+            return listWo;
         }
         
         // GET: api/WeatherObservation
