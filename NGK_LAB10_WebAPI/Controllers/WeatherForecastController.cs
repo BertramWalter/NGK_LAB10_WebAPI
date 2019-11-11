@@ -48,6 +48,8 @@ namespace NGK_LAB10_WebAPI.Controllers
             return wf;
         }
 
+
+
         //Standard Get - Get all weather data
         [HttpGet]
         public IEnumerable<WeatherForecast> GetAllWeatherData()
@@ -68,7 +70,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         //    })
         //        .ToArray();
         //}
-        
+
 
         //public void GenerateWeatherData()
         //{
