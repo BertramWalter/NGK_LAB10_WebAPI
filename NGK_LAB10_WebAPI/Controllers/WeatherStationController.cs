@@ -42,6 +42,20 @@ namespace NGK_LAB10_WebAPI.Controllers
             return weatherStation;
         }
 
+
+        [HttpGet("{startTime,endTime}")]
+        public async Task<ActionResult<WeatherStation>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
+        {
+            var weatherStation = await _context.WeatherStation.FindAsync(id);
+
+            if (weatherStation == null)
+            {
+                return NotFound();
+            }
+
+            return weatherStation;
+        }
+
         // PUT: api/WeatherStation/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
