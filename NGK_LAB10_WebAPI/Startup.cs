@@ -53,15 +53,6 @@ namespace NGK_LAB10_WebAPI
                 endpoints.MapControllers();
             });
 
-            app.UseEndpoints(endpoints =>
-            {
-                
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern:
-                    "{controller=WeatherObservation}/{action=Test}/{id?}"
-                );
-            });
         }
     }
 }

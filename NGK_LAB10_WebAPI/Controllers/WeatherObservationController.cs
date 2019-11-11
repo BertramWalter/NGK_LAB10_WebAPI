@@ -11,7 +11,7 @@ using NGK_LAB10_WebAPI.Models;
 
 namespace NGK_LAB10_WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class WeatherObservationController : ControllerBase
     {
@@ -36,13 +36,14 @@ namespace NGK_LAB10_WebAPI.Controllers
 
             });
         }
-        
+
+        [HttpGet]
         public IActionResult Test(int x = 2, int y = 4)
         {
             return Content(string.Format($"x={x}, og y={y}"));
         }
 
-        // GET: api/WeatherObservation
+        //GET: api/WeatherObservation
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
         {
