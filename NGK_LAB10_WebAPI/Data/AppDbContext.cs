@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using NGK_LAB10_WebAPI.Models;
 
 namespace NGK_LAB10_WebAPI.Data
 {
@@ -10,6 +11,7 @@ namespace NGK_LAB10_WebAPI.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
+        public DbSet<NGK_LAB10_WebAPI.Models.WeatherStation> WeatherStation { get; set; }
 
         //DbSets here:
         //public DbSet<Model/tablename> Table { get; set; }
