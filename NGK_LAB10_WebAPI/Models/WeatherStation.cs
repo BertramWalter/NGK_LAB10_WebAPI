@@ -7,5 +7,6 @@ namespace NGK_LAB10_WebAPI.Models
 {
     public class WeatherStation
     {
+
     }
 }
