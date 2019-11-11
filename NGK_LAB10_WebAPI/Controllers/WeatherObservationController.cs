@@ -28,33 +28,53 @@ namespace NGK_LAB10_WebAPI.Controllers
         {
             List<WeatherObservation> listWo = new List<WeatherObservation>();
 
-            for (int i = 0; i < 4; i++)
+            var count = _context.WeatherObservation.Count();
+            
+            if (count > 5)
             {
-                WeatherObservation wo = new WeatherObservation
+                for (int i = 0; i < 5; i++)
                 {
-                    Date =  _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync()-i).Date,
-                    TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
-                    Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
-                    Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
-                    AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
-                };
-                listWo.Add(wo);
+                    WeatherObservation wo = new WeatherObservation
+                    {
+                        Date = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Date,
+                        TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
+                        Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
+                        Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
+                        AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
+                    };
+                    listWo.Add(wo);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    WeatherObservation wo = new WeatherObservation
+                    {
+                        Date = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Date,
+                        TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
+                        Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
+                        Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
+                        AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
+                    };
+                    listWo.Add(wo);
+                }
             }
             return listWo;
         }
 
-        [HttpGet]
-        public IActionResult Test(int x = 2, int y = 4)
-        {
-            return Content(string.Format($"x={x}, og y={y}"));
-        }
+        //[HttpGet]
+        //public IActionResult Test(int x = 2, int y = 4)
+        //{
+        //    return Content(string.Format($"x={x}, og y={y}"));
+        //}
 
         //GET: api/WeatherObservation
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
-        {
-            return await _context.WeatherObservation.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
+        //{
+        //    return await _context.WeatherObservation.ToListAsync();
+        //}
 
         //Get data by temperature
         [HttpGet("{Date}")]
@@ -89,7 +109,6 @@ namespace NGK_LAB10_WebAPI.Controllers
 
             return weatherObs;
         }
-
 
         // PUT: api/WeatherObservation/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
