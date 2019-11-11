@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,11 @@ namespace NGK_LAB10_WebAPI.Controllers
             return listWo;
         }
         
+        public IActionResult Test(int x = 2, int y = 4)
+        {
+            return Content(string.Format($"x={x}, og y={y}"));
+        }
+
         // GET: api/WeatherObservation
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
@@ -51,11 +57,11 @@ namespace NGK_LAB10_WebAPI.Controllers
 
         //Get data by temperature
         [HttpGet("{Date}")]
-        public List<WeatherObservation> GetWeatherByDate(DateTime Date)
+        public async Task<ActionResult<List<WeatherObservation>>> GetWeatherByDate(DateTime Date)
         {
             List<WeatherObservation> weatherObs = new List<WeatherObservation>();
 
-            foreach (var observation in _context.WeatherObservation)
+            await foreach (var observation in _context.WeatherObservation)
             {
                 if (Date == observation.Date)
                 {
@@ -64,46 +70,24 @@ namespace NGK_LAB10_WebAPI.Controllers
             }
 
             return weatherObs;
-
         }
 
-        //[HttpGet("{startTime,endTime}")]
-        //public async Task<ActionResult<List<WeatherObservation>>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
-        //{
-
-
-        //    //foreach (var observation in )
-        //    //{
-                
-        //    //}
-
-
-
-        //    //var weatherStation = await _context.WeatherStation.FindAsync(id);
-
-        //    //if (weatherStation == null)
-        //    //{
-        //    //    return NotFound();
-        //    //}
-
-        //    //return weatherStation;
-        //}
-
-
-        // GET: api/WeatherObservation/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<WeatherObservation>> GetWeatherObservation(int id)
+        //Get weather data from specific time interval
+        [HttpGet("{startTime,endTime}")]
+        public async Task<ActionResult<List<WeatherObservation>>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
         {
-            var weatherObservation = await _context.WeatherObservation.FindAsync(id);
+            List<WeatherObservation> weatherObs = new List<WeatherObservation>();
 
-            if (weatherObservation == null)
+            await foreach (var observation in _context.WeatherObservation)
             {
-                return NotFound();
+                if (observation.Date >= startTime && observation.Date <= endTime)
+                {
+                    weatherObs.Add(observation);
+                }
             }
 
-            return weatherObservation;
+            return weatherObs;
         }
-
 
 
         // PUT: api/WeatherObservation/5
