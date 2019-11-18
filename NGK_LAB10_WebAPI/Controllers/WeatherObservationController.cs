@@ -24,66 +24,91 @@ namespace NGK_LAB10_WebAPI.Controllers
 
         //Via web.api’et kan andre klienter hente de seneste uploadede vejrdata
         [HttpGet]
-        public IEnumerable<WeatherObservation> GetLatestWeatherData()
+        public async Task<ActionResult<List<WeatherObservation>>> GetLatestWeatherData()
         {
-            return Enumerable.Range(1, 4).Select(index => new WeatherObservation
-            {
-                Date = _context.WeatherObservation.Last().Date,
-                TemperatureC = _context.WeatherObservation.Last().TemperatureC,
-                Location = _context.WeatherObservation.Last().Location,
-                Humidity = _context.WeatherObservation.Last().Humidity,
-                AirPressure = _context.WeatherObservation.Last().AirPressure
+            List<WeatherObservation> listWo = new List<WeatherObservation>();
 
-            });
+            var count = _context.WeatherObservation.Count();
+            
+            if (count > 5)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    WeatherObservation wo = new WeatherObservation
+                    {
+                        Date = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Date,
+                        TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
+                        Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
+                        Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
+                        AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
+                    };
+                    listWo.Add(wo);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    WeatherObservation wo = new WeatherObservation
+                    {
+                        Date = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Date,
+                        TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
+                        Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
+                        Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
+                        AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
+                    };
+                    listWo.Add(wo);
+                }
+            }
+            return listWo;
         }
-        
+
         //[HttpGet]
         //public IActionResult Test(int x = 2, int y = 4)
         //{
         //    return Content(string.Format($"x={x}, og y={y}"));
         //}
 
-        // GET: api/WeatherObservation
+        //GET: api/WeatherObservation
         //[HttpGet]
         //public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
         //{
         //    return await _context.WeatherObservation.ToListAsync();
         //}
 
-        ////Get data by temperature
-        //[HttpGet("{Date}")]
-        //public async Task<ActionResult<List<WeatherObservation>>> GetWeatherByDate(DateTime Date)
-        //{
-        //    List<WeatherObservation> weatherObs = new List<WeatherObservation>();
+        //Get data by temperature
+        [HttpGet("{Date}")]
+        public async Task<ActionResult<List<WeatherObservation>>> GetWeatherByDate(DateTime Date)
+        {
+            List<WeatherObservation> weatherObs = new List<WeatherObservation>();
 
-        //    await foreach (var observation in _context.WeatherObservation)
-        //    {
-        //        if (Date == observation.Date)
-        //        {
-        //            weatherObs.Add(observation);
-        //        }
-        //    }
+            await foreach (var observation in _context.WeatherObservation)
+            {
+                if (Date == observation.Date)
+                {
+                    weatherObs.Add(observation);
+                }
+            }
 
-        //    return weatherObs;
-        //}
+            return weatherObs;
+        }
 
-        ////Get weather data from specific time interval
-        //[HttpGet("{startTime,endTime}")]
-        //public async Task<ActionResult<List<WeatherObservation>>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
-        //{
-        //    List<WeatherObservation> weatherObs = new List<WeatherObservation>();
+        //Get weather data from specific time interval
+        [HttpGet("{startTime,endTime}")]
+        public async Task<ActionResult<List<WeatherObservation>>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
+        {
+            List<WeatherObservation> weatherObs = new List<WeatherObservation>();
 
-        //    await foreach (var observation in _context.WeatherObservation)
-        //    {
-        //        if (observation.Date >= startTime && observation.Date <= endTime)
-        //        {
-        //            weatherObs.Add(observation);
-        //        }
-        //    }
+            await foreach (var observation in _context.WeatherObservation)
+            {
+                if (observation.Date >= startTime && observation.Date <= endTime)
+                {
+                    weatherObs.Add(observation);
+                }
+            }
 
-        //    return weatherObs;
-        //}
-
+            return weatherObs;
+        }
 
         // PUT: api/WeatherObservation/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
