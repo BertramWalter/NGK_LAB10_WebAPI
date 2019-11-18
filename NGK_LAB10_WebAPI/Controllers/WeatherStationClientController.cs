@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NGK_LAB10_WebAPI.Data;
 using NGK_LAB10_WebAPI.Models;
 using static BCrypt.Net.BCrypt;
@@ -26,18 +30,42 @@ namespace NGK_LAB10_WebAPI.Controllers
         }
 
         //// GET: api/WeatherStationClient
-        //[HttpPost("login"), AllowAnonymous]
-        //public async Task<ActionResult<>> Login(WeatherStationClient client)
-        //{
-        //    client.SerialNumber = client.SerialNumber.ToLower();
-        //    var user = await _context.WeatherStationClient.Where(u => u.SerialNumber == client.SerialNumber)
-        //        .FirstOrDefaultAsync();
+        [HttpPost("login"), AllowAnonymous]
+        public async Task<ActionResult<TokenDto>> Login(LoginClient login)
+        {
+            login.SerialNumber = login.SerialNumber.ToLower();
+            var user = await _context.WeatherStationClient.Where(u => u.SerialNumber == login.SerialNumber)
+                .FirstOrDefaultAsync();
 
-        //    if (user != null)
-        //    {
-        //        var validPwd = Verify(client., user.PwHash )
-        //    }
-        //}
+            if (user != null)
+            {
+                var validPwd = Verify(login.Password, user.PwHash);
+                if (validPwd)
+                {
+                    return new TokenDto {Token = GenerateToken(user.SerialNumber)};
+                }
+            }
+
+            ModelState.AddModelError(string.Empty, "Forkert brugernavn eller password");
+            return BadRequest(ModelState);
+        }
+
+        private string GenerateToken(string username)
+        {
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.Name, username)
+            };
+
+            var token = new JwtSecurityToken(
+                new JwtHeader(new SigningCredentials(
+                    new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            "the secret that needs to be at least 16 characters long for HmacSha256")),
+                    SecurityAlgorithms.HmacSha256)), new JwtPayload(claims));
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
 
         // GET: api/WeatherStationClient
         [HttpGet]
