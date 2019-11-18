@@ -134,8 +134,16 @@ namespace NGK_LAB10_WebAPI.Controllers
             if (SerialNumberExists != null)
                 return BadRequest(new {errorMessage = "Serial Number already registered"});
 
-            c.PwHash = BCrypt.Net.BCrypt.HashPassword(c.Password, BcryptWorkfactor);
-            _context.WeatherStationClient.Add()
+            WeatherStationClient client = new WeatherStationClient();
+
+            client.SerialNumber = c.SerialNumber;
+            client.PwHash = BCrypt.Net.BCrypt.HashPassword(c.Password, BcryptWorkfactor);
+
+            _context.WeatherStationClient.Add(client);
+            await _context.SaveChangesAsync();
+            var jwtToken = new TokenDto();
+            jwtToken.Token = GenerateToken(client);
+            return CreatedAtAction("Get", new {id = client.SerialNumber}, jwtToken);
         }
     }
 }
