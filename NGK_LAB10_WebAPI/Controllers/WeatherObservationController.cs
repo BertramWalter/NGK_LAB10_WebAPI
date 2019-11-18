@@ -11,7 +11,7 @@ using NGK_LAB10_WebAPI.Models;
 
 namespace NGK_LAB10_WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class WeatherObservationController : ControllerBase
     {
@@ -37,51 +37,52 @@ namespace NGK_LAB10_WebAPI.Controllers
             });
         }
         
-        public IActionResult Test(int x = 2, int y = 4)
-        {
-            return Content(string.Format($"x={x}, og y={y}"));
-        }
+        //[HttpGet]
+        //public IActionResult Test(int x = 2, int y = 4)
+        //{
+        //    return Content(string.Format($"x={x}, og y={y}"));
+        //}
 
         // GET: api/WeatherObservation
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
-        {
-            return await _context.WeatherObservation.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
+        //{
+        //    return await _context.WeatherObservation.ToListAsync();
+        //}
 
-        //Get data by temperature
-        [HttpGet("{Date}")]
-        public async Task<ActionResult<List<WeatherObservation>>> GetWeatherByDate(DateTime Date)
-        {
-            List<WeatherObservation> weatherObs = new List<WeatherObservation>();
+        ////Get data by temperature
+        //[HttpGet("{Date}")]
+        //public async Task<ActionResult<List<WeatherObservation>>> GetWeatherByDate(DateTime Date)
+        //{
+        //    List<WeatherObservation> weatherObs = new List<WeatherObservation>();
 
-            await foreach (var observation in _context.WeatherObservation)
-            {
-                if (Date == observation.Date)
-                {
-                    weatherObs.Add(observation);
-                }
-            }
+        //    await foreach (var observation in _context.WeatherObservation)
+        //    {
+        //        if (Date == observation.Date)
+        //        {
+        //            weatherObs.Add(observation);
+        //        }
+        //    }
 
-            return weatherObs;
-        }
+        //    return weatherObs;
+        //}
 
-        //Get weather data from specific time interval
-        [HttpGet("{startTime,endTime}")]
-        public async Task<ActionResult<List<WeatherObservation>>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
-        {
-            List<WeatherObservation> weatherObs = new List<WeatherObservation>();
+        ////Get weather data from specific time interval
+        //[HttpGet("{startTime,endTime}")]
+        //public async Task<ActionResult<List<WeatherObservation>>> GetWeatherObservationBetweenIntervals(DateTime startTime, DateTime endTime)
+        //{
+        //    List<WeatherObservation> weatherObs = new List<WeatherObservation>();
 
-            await foreach (var observation in _context.WeatherObservation)
-            {
-                if (observation.Date >= startTime && observation.Date <= endTime)
-                {
-                    weatherObs.Add(observation);
-                }
-            }
+        //    await foreach (var observation in _context.WeatherObservation)
+        //    {
+        //        if (observation.Date >= startTime && observation.Date <= endTime)
+        //        {
+        //            weatherObs.Add(observation);
+        //        }
+        //    }
 
-            return weatherObs;
-        }
+        //    return weatherObs;
+        //}
 
 
         // PUT: api/WeatherObservation/5
