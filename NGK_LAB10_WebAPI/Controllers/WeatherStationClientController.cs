@@ -170,7 +170,7 @@ namespace NGK_LAB10_WebAPI.Controllers
             _context.WeatherStationClient.Add(client);
             await _context.SaveChangesAsync();
             var jwtToken = new TokenDto();
-            jwtToken.Token = GenerateToken(client);
+            jwtToken.Token = GenerateToken(client.SerialNumber);
             return CreatedAtAction("Get", new {id = client.SerialNumber}, jwtToken);
         }
     }
