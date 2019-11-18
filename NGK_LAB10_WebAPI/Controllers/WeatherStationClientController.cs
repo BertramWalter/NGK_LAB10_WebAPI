@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NGK_LAB10_WebAPI.Data;
 using NGK_LAB10_WebAPI.Models;
+using static BCrypt.Net.BCrypt;
 
 namespace NGK_LAB10_WebAPI.Controllers
 {
@@ -14,12 +17,27 @@ namespace NGK_LAB10_WebAPI.Controllers
     [ApiController]
     public class WeatherStationClientController : ControllerBase
     {
+        private const int BcryptWorkfactor = 11;
         private readonly AppDbContext _context;
 
         public WeatherStationClientController(AppDbContext context)
         {
             _context = context;
         }
+
+        //// GET: api/WeatherStationClient
+        //[HttpPost("login"), AllowAnonymous]
+        //public async Task<ActionResult<>> Login(WeatherStationClient client)
+        //{
+        //    client.SerialNumber = client.SerialNumber.ToLower();
+        //    var user = await _context.WeatherStationClient.Where(u => u.SerialNumber == client.SerialNumber)
+        //        .FirstOrDefaultAsync();
+
+        //    if (user != null)
+        //    {
+        //        var validPwd = Verify(client., user.PwHash )
+        //    }
+        //}
 
         // GET: api/WeatherStationClient
         [HttpGet]
@@ -98,13 +116,34 @@ namespace NGK_LAB10_WebAPI.Controllers
 
             _context.WeatherStationClient.Remove(weatherStationClient);
             await _context.SaveChangesAsync();
-
+            
             return weatherStationClient;
         }
 
         private bool WeatherStationClientExists(long id)
         {
             return _context.WeatherStationClient.Any(e => e.WeatherStationClientId == id);
+        }
+
+        [HttpPost("Register"), AllowAnonymous]
+        public async TaskStatus<ActionResult> Register(LoginClient c)
+        {
+            c.SerialNumber = c.SerialNumber.ToLower();
+            var SerialNumberExists = await _context.WeatherStationClient
+                .Where(c => c.SerialNumber == c.SerialNumber).FirstOrDefaultAsync();
+            if (SerialNumberExists != null)
+                return BadRequest(new {errorMessage = "Serial Number already registered"});
+
+            WeatherStationClient client = new WeatherStationClient();
+
+            client.SerialNumber = c.SerialNumber;
+            client.PwHash = BCrypt.Net.BCrypt.HashPassword(c.Password, BcryptWorkfactor);
+
+            _context.WeatherStationClient.Add(client);
+            await _context.SaveChangesAsync();
+            var jwtToken = new TokenDto();
+            jwtToken.Token = GenerateToken(client);
+            return CreatedAtAction("Get", new {id = client.SerialNumber}, jwtToken);
         }
     }
 }
