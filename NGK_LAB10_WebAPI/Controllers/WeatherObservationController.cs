@@ -63,7 +63,6 @@ namespace NGK_LAB10_WebAPI.Controllers
             return listWo;
         }
 
-
         //GET: api/WeatherObservation
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
