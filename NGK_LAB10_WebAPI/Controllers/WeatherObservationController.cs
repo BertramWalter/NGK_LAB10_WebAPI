@@ -70,7 +70,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         //}
 
         //GET: api/WeatherObservation
-        [HttpGet("All")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
         {
             return await _context.WeatherObservation.ToListAsync();
