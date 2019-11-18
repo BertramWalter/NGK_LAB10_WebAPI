@@ -12,5 +12,7 @@ namespace NGK_LAB10_WebAPI.Data
         public ClientDbContext(DbContextOptions<ClientDbContext>
             options) :base(options)
         { }
+
+        public DbSet<NGK_LAB10_WebAPI.Models.WeatherStationClient> WeatherStationClients { get; set; }
     }
 }
