@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NGK_LAB10_WebAPI.Data;
 using NGK_LAB10_WebAPI.Models;
+using static BCrypt.Net.BCrypt;
 
 namespace NGK_LAB10_WebAPI.Controllers
 {
@@ -20,6 +23,20 @@ namespace NGK_LAB10_WebAPI.Controllers
         {
             _context = context;
         }
+
+        //// GET: api/WeatherStationClient
+        //[HttpPost("login"), AllowAnonymous]
+        //public async Task<ActionResult<>> Login(WeatherStationClient client)
+        //{
+        //    client.SerialNumber = client.SerialNumber.ToLower();
+        //    var user = await _context.WeatherStationClient.Where(u => u.SerialNumber == client.SerialNumber)
+        //        .FirstOrDefaultAsync();
+
+        //    if (user != null)
+        //    {
+        //        var validPwd = Verify(client., user.PwHash )
+        //    }
+        //}
 
         // GET: api/WeatherStationClient
         [HttpGet]
