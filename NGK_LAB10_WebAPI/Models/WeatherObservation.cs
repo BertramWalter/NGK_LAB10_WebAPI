@@ -15,6 +15,7 @@ namespace NGK_LAB10_WebAPI.Models
         [Column(TypeName = "decimal(10,1)")]
         public decimal TemperatureC { get; set; }
 
+
         public Location Location { get; set; }
 
         public int Humidity { get; set; }
