@@ -17,6 +17,7 @@ namespace NGK_LAB10_WebAPI.Controllers
     [ApiController]
     public class WeatherStationClientController : ControllerBase
     {
+        private const int BcryptWorkfactor = 11;
         private readonly AppDbContext _context;
 
         public WeatherStationClientController(AppDbContext context)
@@ -115,13 +116,26 @@ namespace NGK_LAB10_WebAPI.Controllers
 
             _context.WeatherStationClient.Remove(weatherStationClient);
             await _context.SaveChangesAsync();
-
+            
             return weatherStationClient;
         }
 
         private bool WeatherStationClientExists(long id)
         {
             return _context.WeatherStationClient.Any(e => e.WeatherStationClientId == id);
+        }
+
+        [HttpPost("Register"), AllowAnonymous]
+        public async TaskStatus<ActionResult> Register(LoginClient c)
+        {
+            c.SerialNumber = c.SerialNumber.ToLower();
+            var SerialNumberExists = await _context.WeatherStationClient
+                .Where(c => c.SerialNumber == c.SerialNumber).FirstOrDefaultAsync();
+            if (SerialNumberExists != null)
+                return BadRequest(new {errorMessage = "Serial Number already registered"});
+
+            c.PwHash = BCrypt.Net.BCrypt.HashPassword(c.Password, BcryptWorkfactor);
+            _context.WeatherStationClient.Add()
         }
     }
 }
