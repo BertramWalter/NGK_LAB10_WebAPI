@@ -23,13 +23,13 @@ namespace NGK_LAB10_WebAPI.Controllers
         }
 
         //Via web.api’et kan andre klienter hente de seneste uploadede vejrdata
-        [HttpGet]
+        [HttpGet("Latest")]
         public async Task<ActionResult<List<WeatherObservation>>> GetLatestWeatherData()
         {
             List<WeatherObservation> listWo = new List<WeatherObservation>();
 
             var count = _context.WeatherObservation.Count();
-            
+
             if (count > 5)
             {
                 for (int i = 0; i < 5; i++)
@@ -70,7 +70,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         //}
 
         //GET: api/WeatherObservation
-        [HttpGet]
+        [HttpGet("All")]
         public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
         {
             return await _context.WeatherObservation.ToListAsync();
