@@ -43,11 +43,11 @@ namespace NGK_LAB10_WebAPI.Controllers
             return listWo;
         }
 
-        [HttpGet]
-        public IActionResult Test(int x = 2, int y = 4)
-        {
-            return Content(string.Format($"x={x}, og y={y}"));
-        }
+        //[HttpGet]
+        //public IActionResult Test(int x = 2, int y = 4)
+        //{
+        //    return Content(string.Format($"x={x}, og y={y}"));
+        //}
 
         //GET: api/WeatherObservation
         [HttpGet]
