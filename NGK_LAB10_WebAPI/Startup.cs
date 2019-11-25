@@ -34,6 +34,8 @@ namespace NGK_LAB10_WebAPI
 
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddEntityFrameworkStores<AppDbContext>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +59,7 @@ namespace NGK_LAB10_WebAPI
             //});
 
             //Adding for authentication
+
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
