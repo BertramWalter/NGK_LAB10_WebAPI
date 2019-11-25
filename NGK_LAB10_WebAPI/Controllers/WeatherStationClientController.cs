@@ -19,6 +19,7 @@ namespace NGK_LAB10_WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class WeatherStationClientController : ControllerBase
     {
         private const int BcryptWorkfactor = 11;
@@ -154,7 +155,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         }
 
         [HttpPost("Register"), AllowAnonymous]
-        public async TaskStatus<ActionResult> Register(LoginClient c)
+        public async Task<ActionResult> Register(LoginClient c)
         {
             c.SerialNumber = c.SerialNumber.ToLower();
             var SerialNumberExists = await _context.WeatherStationClient
