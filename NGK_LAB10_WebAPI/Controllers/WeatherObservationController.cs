@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -107,6 +108,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         // PUT: api/WeatherObservation/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWeatherObservation(int id, WeatherObservation weatherObservation)
         {
@@ -139,6 +141,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         // POST: api/WeatherObservation
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<WeatherObservation>> PostWeatherObservation(WeatherObservation weatherObservation)
         {
@@ -149,6 +152,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         }
 
         // DELETE: api/WeatherObservation/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<WeatherObservation>> DeleteWeatherObservation(int id)
         {
