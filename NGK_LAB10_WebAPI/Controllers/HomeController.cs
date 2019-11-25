@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace NGK_LAB10_WebAPI.Controllers
 {
     public class HomeController : Controller
@@ -13,12 +14,15 @@ namespace NGK_LAB10_WebAPI.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        public IActionResult GetUserDetails()
+        {
+            return new ObjectResult(new
+            {
+                Username = User.Identity.Name
+            });
+        }
     }
 
-    //[Authorize]
-    //public IActionResult GetUserDetails(){
-    //    return new ObjectResult(new {
-    //        Username = User.Identity.Name
-    //    });
-    //}
 }

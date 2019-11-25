@@ -154,7 +154,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         }
 
         [HttpPost("Register"), AllowAnonymous]
-        public async TaskStatus<ActionResult> Register(LoginClient c)
+        public async Task<ActionResult> Register(LoginClient c) //Stod TaskStatus før?
         {
             c.SerialNumber = c.SerialNumber.ToLower();
             var SerialNumberExists = await _context.WeatherStationClient
