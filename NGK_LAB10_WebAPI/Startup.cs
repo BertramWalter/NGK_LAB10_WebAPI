@@ -30,6 +30,7 @@ namespace NGK_LAB10_WebAPI
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddControllers();
+            services.AddSingleton<IConfiguration>(Configuration);
 
             //NEW
             services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);

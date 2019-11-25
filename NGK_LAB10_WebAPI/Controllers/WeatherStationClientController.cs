@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using NGK_LAB10_WebAPI.Data;
 using NGK_LAB10_WebAPI.Models;
@@ -24,10 +25,12 @@ namespace NGK_LAB10_WebAPI.Controllers
     {
         private const int BcryptWorkfactor = 11;
         private readonly AppDbContext _context;
+        readonly IConfiguration _configuration;
 
-        public WeatherStationClientController(AppDbContext context)
+        public WeatherStationClientController(AppDbContext context, IConfiguration config)
         {
             _context = context;
+            _configuration = config;
         }
 
         //// GET: api/WeatherStationClient
@@ -43,7 +46,7 @@ namespace NGK_LAB10_WebAPI.Controllers
                 var validPwd = Verify(login.Password, user.PwHash);
                 if (validPwd)
                 {
-                    return new TokenDto {Token = GenerateToken(user.SerialNumber)};
+                    return new TokenDto {Token = GenerateToken(user)};
                 }
             }
 
@@ -51,18 +54,19 @@ namespace NGK_LAB10_WebAPI.Controllers
             return BadRequest(ModelState);
         }
 
-        private string GenerateToken(string username)
+        private string GenerateToken(WeatherStationClient vc)
         {
             var claims = new Claim[]
             {
-                new Claim(ClaimTypes.Name, username)
+                new Claim(ClaimTypes.NameIdentifier, vc.WeatherStationClientId.ToString()),
+                new Claim(ClaimTypes.Name, vc.SerialNumber)
             };
 
             var token = new JwtSecurityToken(
                 new JwtHeader(new SigningCredentials(
                     new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(
-                            "the secret that needs to be at least 16 characters long for HmacSha256")),
+                            _configuration["JwtSecret"])),
                     SecurityAlgorithms.HmacSha256)), new JwtPayload(claims));
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -171,7 +175,7 @@ namespace NGK_LAB10_WebAPI.Controllers
             _context.WeatherStationClient.Add(client);
             await _context.SaveChangesAsync();
             var jwtToken = new TokenDto();
-            jwtToken.Token = GenerateToken(client.SerialNumber);
+            jwtToken.Token = GenerateToken(client);
             return CreatedAtAction("Get", new {id = client.SerialNumber}, jwtToken);
         }
     }

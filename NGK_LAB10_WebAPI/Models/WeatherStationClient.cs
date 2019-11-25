@@ -17,7 +17,5 @@ namespace NGK_LAB10_WebAPI.Models
         
         [MaxLength(60)]
         public string PwHash { get; set; }
-        [MaxLength(12)]
-        public string Password { get; set; }
     }
 }
