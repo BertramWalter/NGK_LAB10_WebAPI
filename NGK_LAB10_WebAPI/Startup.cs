@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using NGK_LAB10_WebAPI.Data;
+using System.Text;
 
 namespace NGK_LAB10_WebAPI
 {
@@ -31,10 +34,21 @@ namespace NGK_LAB10_WebAPI
             //NEW
             services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);
 
-
+            //Vi bruger bcrypt, så dette bruges ikke.
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddEntityFrameworkStores<AppDbContext>();
 
+            // Add authentication with JWT support
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecret"]))
+                        };
+                    });
 
         }
 
@@ -50,7 +64,8 @@ namespace NGK_LAB10_WebAPI
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //Bruges ikke roller i dette projekt
+            //app.UseAuthorization();
 
             //commented, since we useMvc instead
             //app.UseEndpoints(endpoints =>
@@ -62,6 +77,7 @@ namespace NGK_LAB10_WebAPI
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
             app.UseAuthentication();
 
             app.UseMvcWithDefaultRoute();
