@@ -40,6 +40,7 @@ namespace NGK_LAB10_WebAPI
 
             //NEW
             services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);
+            services.AddSignalR();
 
             //Vi bruger bcrypt, så dette bruges ikke.
             //services.AddDefaultIdentity<IdentityUser>()

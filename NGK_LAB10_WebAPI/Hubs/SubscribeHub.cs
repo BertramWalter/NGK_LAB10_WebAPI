@@ -8,6 +8,7 @@ using NGK_LAB10_WebAPI.Models;
 
 namespace NGK_LAB10_WebAPI.Hubs
 {
+
     public class SubscribeHub: Hub
     {
         public async Task Register()

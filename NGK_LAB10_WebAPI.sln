@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NGK_LAB10_WebAPI", "NGK_LAB10_WebAPI\NGK_LAB10_WebAPI.csproj", "{79E50662-CDCE-4721-889E-7D50BA1A69E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unit.Test.Controllers", "Unit.Test.Controllers\Unit.Test.Controllers.csproj", "{F25125ED-722D-42FC-8672-32C8DC6A3385}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unit.Test.Controllers", "Unit.Test.Controllers\Unit.Test.Controllers.csproj", "{F25125ED-722D-42FC-8672-32C8DC6A3385}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherClient", "WeatherClient\WeatherClient.csproj", "{C4FD6A04-DF0D-4132-AC48-15995539749C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F25125ED-722D-42FC-8672-32C8DC6A3385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F25125ED-722D-42FC-8672-32C8DC6A3385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F25125ED-722D-42FC-8672-32C8DC6A3385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4FD6A04-DF0D-4132-AC48-15995539749C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4FD6A04-DF0D-4132-AC48-15995539749C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4FD6A04-DF0D-4132-AC48-15995539749C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4FD6A04-DF0D-4132-AC48-15995539749C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
