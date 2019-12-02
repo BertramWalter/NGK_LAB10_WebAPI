@@ -164,6 +164,7 @@ namespace NGK_LAB10_WebAPI.Controllers
             c.SerialNumber = c.SerialNumber.ToLower();
             var SerialNumberExists = await _context.WeatherStationClient
                 .Where(c => c.SerialNumber == c.SerialNumber).FirstOrDefaultAsync();
+
             if (SerialNumberExists != null)
                 return BadRequest(new {errorMessage = "Serial Number already registered"});
 
