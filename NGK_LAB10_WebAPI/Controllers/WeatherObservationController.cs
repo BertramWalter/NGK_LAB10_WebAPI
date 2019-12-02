@@ -154,7 +154,7 @@ namespace NGK_LAB10_WebAPI.Controllers
             _context.WeatherObservation.Add(weatherObservation);
             await _context.SaveChangesAsync();
 
-            await _hubContext.Clients.All.SendAsync("WeatherUpdate", weatherObservation);
+            await _hubContext.Clients.All.SendAsync("WeatherUpdate", weatherObservation.TemperatureC.ToString(),weatherObservation.WeatherObservationId.ToString());
 
             return CreatedAtAction("GetWeatherObservation", new { id = weatherObservation.WeatherObservationId }, weatherObservation);
         }

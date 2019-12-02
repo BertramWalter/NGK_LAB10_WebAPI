@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NGK_LAB10_WebAPI", "NGK_LAB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unit.Test.Controllers", "Unit.Test.Controllers\Unit.Test.Controllers.csproj", "{F25125ED-722D-42FC-8672-32C8DC6A3385}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherClient", "WeatherClient\WeatherClient.csproj", "{C4FD6A04-DF0D-4132-AC48-15995539749C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{F7056B7A-26A4-45CA-9BA7-4DB41AA50B7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{F25125ED-722D-42FC-8672-32C8DC6A3385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F25125ED-722D-42FC-8672-32C8DC6A3385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F25125ED-722D-42FC-8672-32C8DC6A3385}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4FD6A04-DF0D-4132-AC48-15995539749C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4FD6A04-DF0D-4132-AC48-15995539749C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4FD6A04-DF0D-4132-AC48-15995539749C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4FD6A04-DF0D-4132-AC48-15995539749C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7056B7A-26A4-45CA-9BA7-4DB41AA50B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7056B7A-26A4-45CA-9BA7-4DB41AA50B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7056B7A-26A4-45CA-9BA7-4DB41AA50B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7056B7A-26A4-45CA-9BA7-4DB41AA50B7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

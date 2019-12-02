@@ -123,7 +123,7 @@ namespace NGK_LAB10_WebAPI
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseSignalR(routes => { routes.MapHub<SubscribeHub>("/SubscribeWeather"); });
+            app.UseSignalR(routes => { routes.MapHub<SubscribeHub>("/Subscriber"); });
 
             app.UseAuthentication();
             app.UseAuthorization();
