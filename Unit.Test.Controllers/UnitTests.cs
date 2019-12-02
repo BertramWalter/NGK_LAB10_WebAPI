@@ -64,7 +64,7 @@ namespace Unit.Test.Controllers
         }
 
         [Fact]
-        public async void GetLatestWeatherData_10DocumentsAvailable_ReturnLatest5()
+        public async void GetLatestWeatherData_10DocumentsAvailable_Return5()
         {
             UnitTests u = new UnitTests();
 
@@ -77,8 +77,34 @@ namespace Unit.Test.Controllers
 
             lastFiveWo = await _uut.GetLatestWeatherData();
 
-            Assert.That(lastFiveWo, Is.EqualTo(_locationAr));
+            Assert.That(lastFiveWo.Value.Count, Is.EqualTo(5));
         }
+
+
+
+        [Fact]
+        public async void GetLatestWeatherData_10DocumentsAvailable_ReturnCorrect5()
+        {
+            UnitTests u = new UnitTests();
+
+            foreach (var w in _listOfWeatherObservations)
+            {
+                await _uut.PostWeatherObservation(w);
+            }
+
+            ActionResult<List<WeatherObservation>> lastFiveWo = new List<WeatherObservation>();
+
+            lastFiveWo = await _uut.GetLatestWeatherData();
+
+            var wdInDb = JsonConvert.SerializeObject(lastFiveWo);
+            
+            Assert.AreEqual(lastFiveWo.Value.ElementAt(0).Location.Name, "Aalborg");
+            Assert.AreEqual(lastFiveWo.Value.ElementAt(1).Location.Name, "Skive");
+            Assert.AreEqual(lastFiveWo.Value.ElementAt(2).Location.Name, "Viborg");
+            Assert.AreEqual(lastFiveWo.Value.ElementAt(3).Location.Name, "Haderslev");
+            Assert.AreEqual(lastFiveWo.Value.ElementAt(4).Location.Name, "Koebenhavn");
+        }
+
 
         [Fact]
         public async void GetWeatherObservation_10Added_DataCorrectReturned()
@@ -102,30 +128,90 @@ namespace Unit.Test.Controllers
             Assert.AreEqual(wdInDb, s + wdInList + "}");
         }
 
-        //[Fact]
-        //public async void GetWeatherObservationBetweenIntervals_FindBetween8And9_DataCorrectReturned()
-        //{
-        //    UnitTests u = new UnitTests();
+        [Fact]
+        public async void GetWeatherObservationBetweenIntervals_FindBetween8And9_AllDataIsBetweenInterval()
+        {
+            UnitTests u = new UnitTests();
 
-        //    foreach (var w in _listOfWeatherObservations)
-        //    {
-        //        w.Date = new DateTime(02 - 12 - 12 - 30);
-        //        await _uut.PostWeatherObservation(w);
-        //    }
+            foreach (var w in _listOfWeatherObservations)
+            {
+                w.Date = new DateTime(2019, 12, 02, 08, 30, 00);
+                await _uut.PostWeatherObservation(w);
+            }
 
-        //    ActionResult<List<WeatherObservation>> weatherData = new List<WeatherObservation>();
+            ActionResult<List<WeatherObservation>> weatherData = new List<WeatherObservation>();
 
-        //    DateTime start = new DateTime(0210);
-        //    DateTime end = new DateTime(02 - 12 - 13 - 00);
+            DateTime start = new DateTime(2019,12,02,08,00,00);
+            DateTime end = new DateTime(2019, 12, 02, 09, 00, 00);
 
-        //    weatherData = await _uut.GetWeatherObservationBetweenIntervals(start, end);
+            weatherData = await _uut.GetWeatherObservationBetweenIntervals(start, end);
 
-        //    var wdInDb = JsonConvert.SerializeObject(weatherData);
-        //    var wdInList = JsonConvert.SerializeObject(_listOfWeatherObservations);
+            var wdInDb = JsonConvert.SerializeObject(weatherData);
+            var wdInList = JsonConvert.SerializeObject(_listOfWeatherObservations);
 
-        //    //string s = "{\"Result\":null,\"Value\":";
+            string s = "{\"Result\":null,\"Value\":";
 
-        //    Assert.AreEqual(wdInDb,  wdInList);
-        //}
+            Assert.AreEqual(wdInDb, s+wdInList+"}");
+        }
+
+        [Fact]
+        public async void GetWeatherObservationBetweenIntervals_FindBetween8And9_NoDataIsBetweenInterval()
+        {
+            UnitTests u = new UnitTests();
+
+            foreach (var w in _listOfWeatherObservations)
+            {
+                w.Date = new DateTime(2019, 12, 02, 09, 30, 00);
+                await _uut.PostWeatherObservation(w);
+            }
+
+            ActionResult<List<WeatherObservation>> weatherData = new List<WeatherObservation>();
+
+            DateTime start = new DateTime(2019, 12, 02, 08, 00, 00);
+            DateTime end = new DateTime(2019, 12, 02, 09, 00, 00);
+
+            weatherData = await _uut.GetWeatherObservationBetweenIntervals(start, end);
+
+            var wdInDb = JsonConvert.SerializeObject(weatherData);
+            var wdInList = JsonConvert.SerializeObject(_listOfWeatherObservations);
+
+            string s = "{\"Result\":null,\"Value\":";
+
+            Assert.AreNotEqual(wdInDb, s + wdInList + "}");
+        }
+
+
+        [Fact]
+        public async void GetWeatherObservationBetweenIntervals_FindBetween8And9_5ObservationsIsBetweenInterval()
+        {
+            UnitTests u = new UnitTests();
+
+            int count = 0;
+            foreach (var w in _listOfWeatherObservations)
+            {
+                if (count < 5)
+                {
+                    w.Date = new DateTime(2019, 12, 02, 08, 30, 00);
+                    await _uut.PostWeatherObservation(w);
+                }
+                else
+                {
+                    w.Date = new DateTime(2019, 12, 02, 10, 30, 00);
+                    await _uut.PostWeatherObservation(w);
+                }
+                count++;
+            }
+
+            ActionResult<List<WeatherObservation>> weatherData = new List<WeatherObservation>();
+
+            DateTime start = new DateTime(2019, 12, 02, 08, 00, 00);
+            DateTime end = new DateTime(2019, 12, 02, 09, 00, 00);
+
+            weatherData = await _uut.GetWeatherObservationBetweenIntervals(start, end);
+
+            var wdInDb = JsonConvert.SerializeObject(weatherData);
+
+            Assert.That(weatherData.Value.Count, Is.EqualTo(5));
+        }
     }
 }
