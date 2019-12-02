@@ -59,8 +59,10 @@ namespace NGK_LAB10_WebAPI.Controllers
             var claims = new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, vc.WeatherStationClientId.ToString()),
-                new Claim(ClaimTypes.Name, vc.SerialNumber)
-            };
+                new Claim(ClaimTypes.Name, vc.SerialNumber),
+                new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
+                new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now).AddDays(1).ToUnixTimeSeconds().ToString())
+                };
 
             var token = new JwtSecurityToken(
                 new JwtHeader(new SigningCredentials(
@@ -159,19 +161,18 @@ namespace NGK_LAB10_WebAPI.Controllers
         }
 
         [HttpPost("Register"), AllowAnonymous]
-        public async Task<ActionResult> Register(LoginClient c) //Stod TaskStatus før?
+        public async Task<ActionResult> Register(LoginClient f) //Stod TaskStatus før?
         {
-            c.SerialNumber = c.SerialNumber.ToLower();
+            f.SerialNumber = f.SerialNumber.ToLower();
             var SerialNumberExists = await _context.WeatherStationClient
-                .Where(c => c.SerialNumber == c.SerialNumber).FirstOrDefaultAsync();
-
+                .Where(c => c.SerialNumber == f.SerialNumber).FirstOrDefaultAsync();
             if (SerialNumberExists != null)
                 return BadRequest(new {errorMessage = "Serial Number already registered"});
 
             WeatherStationClient client = new WeatherStationClient();
 
-            client.SerialNumber = c.SerialNumber;
-            client.PwHash = BCrypt.Net.BCrypt.HashPassword(c.Password, BcryptWorkfactor);
+            client.SerialNumber = f.SerialNumber;
+            client.PwHash = BCrypt.Net.BCrypt.HashPassword(f.Password, BcryptWorkfactor);
 
             _context.WeatherStationClient.Add(client);
             await _context.SaveChangesAsync();
