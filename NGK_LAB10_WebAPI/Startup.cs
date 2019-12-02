@@ -45,9 +45,12 @@ namespace NGK_LAB10_WebAPI
                     {
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            ValidateLifetime = true,
                             ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecret"]))
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecret"])),
+                            ValidateIssuer = false,
+                            ValidateAudience = false,
+                            ValidateLifetime = true
+                           
                         };
                     });
 
@@ -66,7 +69,7 @@ namespace NGK_LAB10_WebAPI
             app.UseRouting();
 
             //Bruges ikke roller i dette projekt
-            //app.UseAuthorization();
+            
 
             //commented, since we useMvc instead
             //app.UseEndpoints(endpoints =>
@@ -80,6 +83,7 @@ namespace NGK_LAB10_WebAPI
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();
             //app.UseMvc(routes =>

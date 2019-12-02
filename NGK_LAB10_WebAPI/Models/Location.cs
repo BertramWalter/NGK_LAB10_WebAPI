@@ -9,7 +9,8 @@ namespace NGK_LAB10_WebAPI.Models
 {
     public class Location
     {
-        [Key]
+        public int LocationId { get; set; }
+        [Required]
         public string Name { get; set; }
         [Required]
         public double Latitude { get; set; }
