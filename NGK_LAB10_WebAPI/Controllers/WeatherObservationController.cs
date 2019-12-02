@@ -35,41 +35,57 @@ namespace NGK_LAB10_WebAPI.Controllers
         [HttpGet("Latest")]
         public async Task<ActionResult<List<WeatherObservation>>> GetLatestWeatherData()
         {
+            List<WeatherObservation> listLastWo = new List<WeatherObservation>();
             List<WeatherObservation> listWo = new List<WeatherObservation>();
 
-            var count = _context.WeatherObservation.Count();
+            int count = 0;
+            await foreach (var wo in _context.WeatherObservation)
+            {
+                listWo.Add(wo);
+            }
+            listWo.Reverse();
 
-            if (count > 5)
+            foreach (var wo in listWo)
             {
-                for (int i = 0; i < 5; i++)
+                listLastWo.Add(wo);
+                count++;
+                if (count >= 5)
                 {
-                    WeatherObservation wo = new WeatherObservation
-                    {
-                        Date = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Date,
-                        TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
-                        Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
-                        Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
-                        AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
-                    };
-                    listWo.Add(wo);
+                    break;
                 }
             }
-            else
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    WeatherObservation wo = new WeatherObservation
-                    {
-                        Date = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Date,
-                        TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
-                        Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
-                        Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
-                        AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
-                    };
-                    listWo.Add(wo);
-                }
-            }
-            return listWo;
+
+            //if (count > 5)
+            //{
+            //    for (int i = 0; i < 5; i++)
+            //    {
+            //        WeatherObservation wo = new WeatherObservation
+            //        {
+            //            Date = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Date,
+            //            TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
+            //            Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
+            //            Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
+            //            AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
+            //        };
+            //        listWo.Add(wo);
+            //    }
+            //}
+            //else
+            //{
+            //    for (int i = 0; i < count; i++)
+            //    {
+            //        WeatherObservation wo = new WeatherObservation
+            //        {
+            //            Date = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Date,
+            //            TemperatureC = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).TemperatureC,
+            //            Location = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Location,
+            //            Humidity = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).Humidity,
+            //            AirPressure = _context.WeatherObservation.ElementAt(await _context.WeatherObservation.CountAsync() - i).AirPressure
+            //        };
+            //        listWo.Add(wo);
+            //    }
+            //}
+            return listLastWo;
         }
 
         public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()

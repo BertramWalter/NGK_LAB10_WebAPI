@@ -15,6 +15,8 @@ namespace NGK_LAB10_WebAPI.Data
         public DbSet<NGK_LAB10_WebAPI.Models.WeatherStationClient> WeatherStationClient { get; set; }
 
         //DbSets here:
-        //public DbSet<Model/tablename> Table { get; set; }
+        //public DbSet<Location> Locations { get; set; }
+        //public DbSet<WeatherObservation> WeatherObservations { get; set; }
+        //public DbSet<WeatherStationClient> WeatherStationClients { get; set; }
     }
 }
