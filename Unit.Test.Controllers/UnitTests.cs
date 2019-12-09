@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NGK_LAB10_WebAPI.Controllers;
 using NGK_LAB10_WebAPI.Data;
+using NGK_LAB10_WebAPI.Hubs;
 using NGK_LAB10_WebAPI.Models;
+using NSubstitute;
 using NUnit.Framework;
 using Xunit;
 using Assert = NUnit.Framework.Assert;
@@ -20,8 +23,9 @@ namespace Unit.Test.Controllers
         private WeatherObservationController _uut;
         private List<WeatherObservation> _listOfWeatherObservations;
         private Location[] _locationAr;
+        //IHubContext
+        private readonly IHubContext<SubscribeHub> _fakeHubContext;
         
-
         public UnitTests()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -31,7 +35,11 @@ namespace Unit.Test.Controllers
             _context = new AppDbContext(options);
             _context.Database.EnsureCreated();
 
-            _uut = new WeatherObservationController(_context);
+            //IHubContext
+            _fakeHubContext = Substitute.For<IHubContext<SubscribeHub>>();
+
+
+            _uut = new WeatherObservationController(_context, _fakeHubContext);
 
             _listOfWeatherObservations = new List<WeatherObservation>();
 
