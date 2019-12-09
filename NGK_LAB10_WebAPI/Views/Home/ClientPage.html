@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+<script src="Scripts/jquery-1.10.2.js"></script>
+<script src="Scripts/jquery-signalR-2.0.2.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var connection = $.hubConnection();
+        var hub = connection.createHubProxy('WeatherHub');
+        hub.on('hello',
+            function(greeting) {
+                alert(greeting);
+            });
+        connection.start().done(function() {
+            hub.invoke('sayHello');
+        })
+    })
+</script>
+</body>
+</html>

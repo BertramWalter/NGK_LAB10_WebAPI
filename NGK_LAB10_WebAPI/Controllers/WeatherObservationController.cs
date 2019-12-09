@@ -104,7 +104,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         // PUT: api/WeatherObservation/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [Authorize]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWeatherObservation(int id, WeatherObservation weatherObservation)
         {
@@ -137,7 +137,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         // POST: api/WeatherObservation
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [Authorize]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpPost]
         public async Task<ActionResult<WeatherObservation>> PostWeatherObservation(WeatherObservation weatherObservation)
         {
@@ -150,7 +150,7 @@ namespace NGK_LAB10_WebAPI.Controllers
         }
 
         // DELETE: api/WeatherObservation/5
-        [Authorize]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<WeatherObservation>> DeleteWeatherObservation(int id)
         {
