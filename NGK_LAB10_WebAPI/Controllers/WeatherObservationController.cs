@@ -22,10 +22,10 @@ namespace NGK_LAB10_WebAPI.Controllers
         private readonly AppDbContext _context;
         private readonly IHubContext<SubscribeHub> _hubContext;
 
-        public WeatherObservationController(AppDbContext context)
-        {
-            _context = context;
-        }
+        //public WeatherObservationController(AppDbContext context)
+        //{
+        //    _context = context;
+        //}
 
         public WeatherObservationController(AppDbContext context, IHubContext<SubscribeHub> hubContext)
         {
