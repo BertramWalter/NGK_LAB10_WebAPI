@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using NGK_LAB10_WebAPI.Data;
+using NGK_LAB10_WebAPI.Hubs;
 using NGK_LAB10_WebAPI.Models;
 
 namespace NGK_LAB10_WebAPI.Controllers
@@ -17,11 +20,16 @@ namespace NGK_LAB10_WebAPI.Controllers
     public class WeatherObservationController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHubContext<SubscribeHub> _hubContext;
 
-        public WeatherObservationController(AppDbContext context)
+        public WeatherObservationController(AppDbContext context, IHubContext<SubscribeHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
+
+        //Websocket Live Opdatering
+        [HttpGet]
 
         //Via web.api’et kan andre klienter hente de seneste uploadede vejrdata
         [HttpGet("Latest")]
@@ -49,8 +57,6 @@ namespace NGK_LAB10_WebAPI.Controllers
             return listLastWo;
         }
 
-        //GET: api/WeatherObservation
-        [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservation()
         {
             return await _context.WeatherObservation.ToListAsync();
@@ -132,6 +138,8 @@ namespace NGK_LAB10_WebAPI.Controllers
         {
             _context.WeatherObservation.Add(weatherObservation);
             await _context.SaveChangesAsync();
+
+            await _hubContext.Clients.All.SendAsync("WeatherUpdate", weatherObservation.TemperatureC.ToString(),weatherObservation.WeatherObservationId.ToString());
 
             return CreatedAtAction("GetWeatherObservation", new { id = weatherObservation.WeatherObservationId }, weatherObservation);
         }
