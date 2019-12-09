@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NGK_LAB10_WebAPI.Controllers;
@@ -20,7 +21,7 @@ namespace Unit.Test.Controllers
         private WeatherObservationController _uut;
         private List<WeatherObservation> _listOfWeatherObservations;
         private Location[] _locationAr;
-        
+
 
         public UnitTests()
         {
