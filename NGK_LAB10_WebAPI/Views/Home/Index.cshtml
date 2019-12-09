@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿@*<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -12,88 +12,131 @@
             margin-top: 50px;
         }
     </style>
+    
+
 </head>
 <body>
-    <h1>Log in to see weather forecasts</h1>
-    <div style="margin: 50px auto; width:600px;">
-        <div id="btLoginContainer">
-            <input type="text" name="username" id="username" placeholder="Username" align ="left" />
-            <input type="password" name="password" id="password" placeholder="Password" />
-            <button id="btLogin">Login</button><br>
-            <label>(Use the same password as the username to sign in)</label>
-        </div>
-        <div id="btLogoutContainer">
-            <button id="btLogout">Logout</button>
-        </div>
-        <div>
-            <label>Action that requires the user to be authenticated: </label><button id="btGetUserDetails">Get User Details</button>
-        </div>
-
+    <nav>
+        <ul>
+            <li><a asp-controller="ClientPage" asp-action="ClientPageV2">Client Page</a></li>
+        </ul>
+    </nav>
+<h1>Log in to see weather forecasts</h1>
+<div style="margin: 50px auto; width: 600px;">
+    <div id="btLoginContainer">
+        <input type="text" name="username" id="username" placeholder="Username" align="left"/>
+        <input type="password" name="password" id="password" placeholder="Password"/>
+        <button id="btLogin">Login</button><br>
+        <label>(Use the same password as the username to sign in)</label>
     </div>
-    <div style="margin: 50px; background: lightgray" id="responseContainer">
-
+    <div id="btLogoutContainer">
+        <button id="btLogout">Logout</button>
+    </div>
+    <div>
+        <label>Action that requires the user to be authenticated: </label><button id="btGetUserDetails">Get User Details</button>
     </div>
 
-    <script>function handleError(xhr, textStatus, errorThrown){
-              if (xhr.status == 401)
-                $('#responseContainer').html("Unauthorized request");
-              else{
-                var message = "<p>Status code: " + xhr.status + "</p>";
-                message += "<pre>" + xhr.responseText + "</pre>";
-                $('#responseContainer').html(message);
-              }
-          }
+</div>
+<div style="margin: 50px; background: lightgray" id="responseContainer">
 
-          function isUserLoggedIn(){
-              return localStorage.getItem("token") !== null;
-          }
+</div>
 
-          function getSavedToken() {
-              return localStorage.getItem("token");
-          }
+<script>
+    function handleError(xhr, textStatus, errorThrown) {
+        if (xhr.status == 401)
+            $('#responseContainer').html("Unauthorized request");
+        else {
+            var message = "<p>Status code: " + xhr.status + "</p>";
+            message += "<pre>" + xhr.responseText + "</pre>";
+            $('#responseContainer').html(message);
+        }
+    }
 
-          $.ajaxSetup({
-              beforeSend: function(xhr) {
-                  if (isUserLoggedIn()) {
-                      xhr.setRequestHeader('Authorization', 'Bearer ' + getSavedToken());
-                  }
-              }
-          });
+    function isUserLoggedIn() {
+        return localStorage.getItem("token") !== null;
+    }
 
-          $(function(){
-              $('#btLogin').click(function() {
-                  $.post("/token", $.param({username: $('#username').val(), password: $('#password').val()})).done(function(token){
-                      localStorage.setItem("token", token);
-                      $('#btLoginContainer').hide();
-                      $('#btLogoutContainer').show();
-                      var message = "<p>Token received and saved in local storage under the key 'token'</p>";
-                      message += "<p>Token Value: </p><p style='word-wrap:break-word'>" + token + "</p>";
-                      $('#responseContainer').html(message);
-                  }).fail(handleError);
-              });
+    function getSavedToken() {
+        return localStorage.getItem("token");
+    }
 
-              $('#btLogout').click(function(){
-                  localStorage.removeItem("token");
-                  $('#btLogoutContainer').hide();
-                  $('#btLoginContainer').show();
-                  $('#responseContainer').html("<p>Token deleted from local storage</p>");
-              });
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            if (isUserLoggedIn()) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + getSavedToken());
+            }
+        }
+    });
+
+    $(function() {
+        $('#btLogin').click(function() {
+            $.post("/token", $.param({ username: $('#username').val(), password: $('#password').val() })).done(
+                function(token) {
+                    localStorage.setItem("token", token);
+                    $('#btLoginContainer').hide();
+                    $('#btLogoutContainer').show();
+                    var message = "<p>Token received and saved in local storage under the key 'token'</p>";
+                    message += "<p>Token Value: </p><p style='word-wrap:break-word'>" + token + "</p>";
+                    $('#responseContainer').html(message);
+                }).fail(handleError);
+        });
+
+        $('#btLogout').click(function() {
+            localStorage.removeItem("token");
+            $('#btLogoutContainer').hide();
+            $('#btLoginContainer').show();
+            $('#responseContainer').html("<p>Token deleted from local storage</p>");
+        });
 
 
-              $('#btGetUserDetails').click(function(){
-                  $.get("/home/getuserdetails").done(function(userDetails){
-                      $('#responseContainer').html("<pre>" + JSON.stringify(userDetails) + "</pre>");
-                  }).fail(handleError);
-              });
+        $('#btGetUserDetails').click(function() {
+            $.get("/home/getuserdetails").done(function(userDetails) {
+                $('#responseContainer').html("<pre>" + JSON.stringify(userDetails) + "</pre>");
+            }).fail(handleError);
+        });
 
 
-              if (isUserLoggedIn()){
-                  $('#btLoginContainer').hide();
-                  $('#btLogoutContainer').show();
-              }else {
-                  $('#btLoginContainer').show();
-                  $('#btLogoutContainer').hide();
-              }
-          });</script>
+        if (isUserLoggedIn()) {
+            $('#btLoginContainer').hide();
+            $('#btLogoutContainer').show();
+        } else {
+            $('#btLoginContainer').show();
+            $('#btLogoutContainer').hide();
+        }
+    });
+</script>
+</body>
+</html>*@
+
+
+
+@{
+    ViewData["Title"] = "ClientPageV2";
+}
+
+<h1>ClientPageV2</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+<script src="Scripts/jquery-1.10.2.js"></script>
+<script src="Scripts/jquery-signalR-2.0.2.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var connection = $.hubConnection();
+        var hub = connection.createHubProxy('WeatherHub');
+        hub.on('hello',
+            function(greeting) {
+                alert(greeting);
+            });
+        connection.start().done(function() {
+            hub.invoke('sayHello');
+        })
+    })
+</script>
 </body>
 </html>

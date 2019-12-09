@@ -99,52 +99,52 @@ namespace Unit.Test.Controllers
 
         #region PostWeatherObservation
 
-        //[Fact]
-        //public async void PosttWeatherData_1ObservationInserted_CorrectInserted()
-        //{
-        //    //Change count < 1 to check for more insertions
-        //    UnitTests u = new UnitTests();
+        [Fact]
+        public async void PosttWeatherData_3ObservationPosted_3CorrectInserted()
+        {
+            //Change count < 1 to check for more insertions
+            UnitTests u = new UnitTests();
 
-        //    int count = 0;
-        //    foreach (var w in _listOfWeatherObservations)
-        //    {
-        //        if (count < 1)
-        //        {
-        //            await _uut.PostWeatherObservation(w);
-        //        }
-        //        else
-        //        {
-        //            break;
-        //        }
+            int count = 0;
+            foreach (var w in _listOfWeatherObservations)
+            {
+                if (count < 3)
+                {
+                    await _uut.PostWeatherObservation(w);
+                }
+                else
+                {
+                    break;
+                }
 
-        //        count++;
-        //    }
+                count++;
+            }
 
-        //    ActionResult<IEnumerable<WeatherObservation>> PostedData = new List<WeatherObservation>();
+            ActionResult<IEnumerable<WeatherObservation>> PostedData = new List<WeatherObservation>();
 
-        //    PostedData = await _uut.GetWeatherObservation();
+            PostedData = await _uut.GetWeatherObservation();
 
-        //    Assert.That(PostedData.Value.GetEnumerator().Current.Location.Name, Is.EqualTo("Horsens"));
-        //}
+            Assert.That(PostedData.Value.ElementAt(0).Location.Name, Is.EqualTo("Horsens"));
+            Assert.That(PostedData.Value.ElementAt(1).Location.Name, Is.EqualTo("Aarhus"));
+            Assert.That(PostedData.Value.ElementAt(2).Location.Name, Is.EqualTo("Herning"));
+        }
 
+        [Fact]
+        public async void PosttWeatherData_Posted10Observations_NumberOfObservationsIs10()
+        {
+            UnitTests u = new UnitTests();
 
+            foreach (var w in _listOfWeatherObservations)
+            {
+                await _uut.PostWeatherObservation(w);
+            }
 
-        //[Fact]
-        //public async void PosttWeatherData_Posted10Observations_NumberOfObservationsIs10()
-        //{
-        //    UnitTests u = new UnitTests();
+            ActionResult<IEnumerable<WeatherObservation>> PostedData = new List<WeatherObservation>();
 
-        //    foreach (var w in _listOfWeatherObservations)
-        //    {
-        //        await _uut.PostWeatherObservation(w);
-        //    }
+            PostedData = await _uut.GetWeatherObservation();
 
-        //    ActionResult<IEnumerable<WeatherObservation>> PostedData = new List<WeatherObservation>();
-
-        //    PostedData = await _uut.GetWeatherObservation();
-
-        //    Assert.That(PostedData.Value.Count, Is.EqualTo(5));
-        //}
+            Assert.That(PostedData.Value.Count, Is.EqualTo(10));
+        }
 
 
         #endregion
