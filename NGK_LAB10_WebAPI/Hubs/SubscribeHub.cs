@@ -10,9 +10,14 @@ namespace NGK_LAB10_WebAPI.Hubs
 {
     public class SubscribeHub: Hub
     {
-        public async Task Register()
+        public void Register()
         {
-            await Groups.AddToGroupAsync("1", "observers");
+            
+        }
+
+        public async Task SendMessage(string user, string message)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
     }
 }

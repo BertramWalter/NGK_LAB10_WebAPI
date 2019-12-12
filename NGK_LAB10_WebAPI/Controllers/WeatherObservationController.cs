@@ -97,7 +97,6 @@ namespace NGK_LAB10_WebAPI.Controllers
                     weatherObs.Add(observation);
                 }
             }
-
             return weatherObs;
         }
 
@@ -112,7 +111,6 @@ namespace NGK_LAB10_WebAPI.Controllers
             {
                 return BadRequest();
             }
-
             _context.Entry(weatherObservation).State = EntityState.Modified;
 
             try
@@ -130,7 +128,6 @@ namespace NGK_LAB10_WebAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 

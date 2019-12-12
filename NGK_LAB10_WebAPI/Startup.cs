@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,7 @@ namespace NGK_LAB10_WebAPI
 
             //NEW
             services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
 
             //Vi bruger bcrypt, så dette bruges ikke.
@@ -57,7 +59,6 @@ namespace NGK_LAB10_WebAPI
                             ValidateIssuer = false,
                             ValidateAudience = false,
                             ValidateLifetime = true
-                           
                         };
                     });
 
@@ -123,8 +124,8 @@ namespace NGK_LAB10_WebAPI
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseSignalR(routes => { routes.MapHub<SubscribeHub>("/Subscriber"); });
-
+            app.UseSignalR(routes => { routes.MapHub<SubscribeHub>("/SubscriberHub"); });
+            
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -24,5 +24,4 @@ namespace NGK_LAB10_WebAPI.Controllers
             });
         }
     }
-
 }
