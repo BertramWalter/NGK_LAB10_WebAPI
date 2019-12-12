@@ -42,11 +42,10 @@ namespace NGK_LAB10_WebAPI
             //NEW
             services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
+            
             services.AddSignalR();
 
-            //Vi bruger bcrypt, så dette bruges ikke.
-            //services.AddDefaultIdentity<IdentityUser>()
-            //    .AddEntityFrameworkStores<AppDbContext>();
 
             // Add authentication with JWT support
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -77,31 +76,16 @@ namespace NGK_LAB10_WebAPI
                 app.UseHsts();
             }
 
+            
 
             #region WebSocket
 
-            //app.UseWebSockets();
-            //app.Use(async (context, next) =>
-            //{
-            //    if (context.Request.Path == "/Subscribe")
-            //    {
-            //        if (context.WebSockets.IsWebSocketRequest)
-            //        {
-            //            WebSocket w = await context.WebSockets.AcceptWebSocketAsync();
-            //            await Subscribe(context, w);
-            //        }
-            //        else
-            //            context.Response.StatusCode = 400;
-            //    }
-            //    else
-            //        await next();
-            //});
 
             #endregion
 
             #region SignalR
 
-            
+
 
             #endregion
 
@@ -110,30 +94,14 @@ namespace NGK_LAB10_WebAPI
 
             app.UseRouting();
 
-            //Bruges ikke roller i dette projekt
-            
-
-            //commented, since we useMvc instead
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
-
-            //Adding for authentication
-
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseSignalR(routes => { routes.MapHub<SubscribeHub>("/SubscriberHub"); });
             
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute("default","{controller=Home}/{action=Index}/{id?}");
-            //});
 
             app.Run(async (context) =>
             {
@@ -141,41 +109,12 @@ namespace NGK_LAB10_WebAPI
                 await context.Response.WriteAsync("Page not found");
             });
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<SubscribeHub>("/SubscriberHub");
+            });
+
         }
-
-        //private async Task TSubscribe(HttpContext context, WebSocket webSocket)
-        //{
-        //    var buffer = new byte[1024 * 4];
-        //    var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-        //    while (!result.CloseStatus.HasValue)
-        //    {
-        //        await webSocket.SendAsync(new ArraySegment<byte>(buffer,0,result.Count ),
-        //            result.MessageType, result.EndOfMessage,CancellationToken.None);
-
-        //        result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-        //    }
-
-        //    await webSocket.CloseAsync(result.CloseStatus.Value, 
-        //        result.CloseStatusDescription, CancellationToken.None);
-        //}
-
-        //private async Task Subscribe(HttpContext context, WebSocket webSocket)
-        //{
-
-
-
-        //    var buffer = new byte[1024 * 4];
-        //    var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-        //    while (!result.CloseStatus.HasValue)
-        //    {
-        //        await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count),
-        //            result.MessageType, result.EndOfMessage, CancellationToken.None);
-
-        //        result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-        //    }
-
-        //    await webSocket.CloseAsync(result.CloseStatus.Value,
-        //        result.CloseStatusDescription, CancellationToken.None);
-        //}
     }
 }
