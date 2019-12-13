@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Client Page</title>
+</head>
+<body>
+<header>Client page</header>
+<!--<script src="Scripts/jquery-1.10.2.js"></script>
+<script src="Scripts/jquery-signalR-2.0.2.js"></script>
+<script src="~/signalr/hubs"></script>-->
+<script src="https://unpkg.com/@microsoft/signalr@3.0.1/dist/browser/signalr.js" crossorigin="anonymous"></script>
+
+<script>
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/SH").build();
+
+
+    connection.on("WeatherUpdate",
+        function(temp, id) {
+            var msg = "Weatherstation id: " + id + " Temp: " + temp;
+
+            console.log(msg);
+        });
+
+    //Virker ikke
+    //connection.start().then(function () {
+    //    console.log("Connected");
+    //}).catch(function (err) {
+    //    console.log(err.toString());
+    //});
+</script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!--<script src="js/UpdateWeatherData.js"></script>-->
+</body>
+</html>

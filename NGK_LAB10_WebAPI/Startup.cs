@@ -19,6 +19,9 @@ using System.Threading.Tasks;
 using NGK_LAB10_WebAPI.Controllers;
 using NGK_LAB10_WebAPI.Hubs;
 
+using Owin;
+
+
 namespace NGK_LAB10_WebAPI
 {
     public class Startup
@@ -26,6 +29,7 @@ namespace NGK_LAB10_WebAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -41,7 +45,7 @@ namespace NGK_LAB10_WebAPI
 
             //NEW
             services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             
             
             services.AddSignalR();
@@ -63,8 +67,9 @@ namespace NGK_LAB10_WebAPI
 
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -76,7 +81,7 @@ namespace NGK_LAB10_WebAPI
                 app.UseHsts();
             }
 
-            
+
 
             #region WebSocket
 
@@ -84,8 +89,6 @@ namespace NGK_LAB10_WebAPI
             #endregion
 
             #region SignalR
-
-
 
             #endregion
 
@@ -112,8 +115,10 @@ namespace NGK_LAB10_WebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<SubscribeHub>("/SubscriberHub");
+                endpoints.MapHub<SubscribeHub>("/SH");
             });
+
+
 
         }
     }

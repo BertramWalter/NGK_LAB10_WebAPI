@@ -1,13 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>14db3c1d-6fce-4406-99ec-4cd451c113f0</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="Views\Home\ClientPage.html" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="3.2.1" />
@@ -35,6 +31,10 @@
 
   <ItemGroup>
     <Folder Include="Security\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\ClientPage.html" />
   </ItemGroup>
 
 </Project>

@@ -135,7 +135,7 @@
 
         $(function() {
             $('#btLogin').click(function() {
-                $.post("/token", $.param({ username: $('#username').val(), password: $('#password').val() })).done(
+                $.post("/api/weatherstationclient/login", $.param({ username: $('#username').val(), password: $('#password').val() })).done(
                     function(token) {
                         localStorage.setItem("token", token);
                         $('#btLoginContainer').hide();
